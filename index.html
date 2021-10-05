@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+      .done {
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="todo-app">
+      <ul>
+        <todo-item
+          v-for="item in todoList"
+          v-bind:todo="item"
+        ></todo-item>
+      </ul>
+      <form @submit="addTodo">
+        <input type="text" placeholder="Add todo" v-model="newItem" />
+        <input type="submit" name="Add" value="Add" />
+      </form>
+    </div>
+
+    <script>
+      const TodoList = {
+        data() {
+          return {
+            todoList: []
+          }
+        },
+        methods: {
+          addTodo(event) {
+            this.todoList.push({ text: this.newItem, isDone: false })
+            this.newItem = ''
+
+            event.preventDefault()
+            return false
+          }
+        }
+      }
+
+      const app = Vue.createApp(TodoList)
+
+      app.component('todo-item', {
+        props: ['todo'],
+        template: `
+          <li>
+            <input type="checkbox" v-model="todo.isDone" />
+            <label :class="{ done: todo.isDone}">{{ todo.text }}</label>
+          </li>
+        `
+      })
+
+      vm = app.mount('#todo-app')
+    </script>
+  </body>
+</html>
