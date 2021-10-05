@@ -13,8 +13,9 @@
     <div id="todo-app">
       <ul>
         <todo-item
-          v-for="item in todoList"
+          v-for="item in state.todoList"
           v-bind:todo="item"
+          v-bind:done-enabled="state.doneEnabled"
         ></todo-item>
       </ul>
       <form @submit="addTodo">
@@ -24,19 +25,28 @@
     </div>
 
     <script>
+      const store = {
+        state: Vue.reactive({
+          todoList: [{ text: 'First task', done: false }],
+          doneEnabled: false
+        })
+      }
+
       const TodoList = {
         data() {
-          return {
-            todoList: []
-          }
+          return store
         },
         methods: {
           addTodo(event) {
-            this.todoList.push({ text: this.newItem, isDone: false })
+            this.state.todoList.push({ text: this.newItem, isDone: false })
             this.newItem = ''
 
             event.preventDefault()
             return false
+          },
+
+          toggleDoneFeature(value) {
+            this.state.doneEnabled = value
           }
         }
       }
@@ -44,11 +54,14 @@
       const app = Vue.createApp(TodoList)
 
       app.component('todo-item', {
-        props: ['todo'],
+        props: ['todo', 'doneEnabled'],
         template: `
-          <li>
+          <li v-if="doneEnabled">
             <input type="checkbox" v-model="todo.isDone" />
             <label :class="{ done: todo.isDone}">{{ todo.text }}</label>
+          </li>
+          <li v-if="!doneEnabled">
+            {{ todo.text }}
           </li>
         `
       })
@@ -78,8 +91,10 @@
         var treatment = client.getTreatment('SPL-TODO_Done');
         if (treatment === 'on') {
             console.log('on')
+            vm.toggleDoneFeature(true)
         } else if (treatment === 'off') {
             console.log('off')
+            vm.toggleDoneFeature(false)
         } else {
             console.log(treatment)
         }
