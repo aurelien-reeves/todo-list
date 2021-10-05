@@ -74,14 +74,16 @@
         console.error(error)
       }
 
-      var treatment = client.getTreatment('SPL-TODO_Done');
-      if (treatment === 'on') {
-          console.log('on')
-      } else if (treatment === 'off') {
-          console.log('off')
-      } else {
-          console.log(treatment)
-      }
+      client.on(client.Event.SDK_READY, function() {
+        var treatment = client.getTreatment('SPL-TODO_Done');
+        if (treatment === 'on') {
+            console.log('on')
+        } else if (treatment === 'off') {
+            console.log('off')
+        } else {
+            console.log(treatment)
+        }
+      })
     </script>
   </body>
 </html>
