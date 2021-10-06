@@ -98,7 +98,7 @@
             this.newItem = ''
             document.querySelector('#new-item').value = this.newItem
 
-            analytics.track('Todo added', {
+            analytics.track('Todo_Added', {
               totalInCurrentList: this.state.todoList.length
             })
 
@@ -110,7 +110,7 @@
 
           changeDoneState(status) {
             console.log(status)
-            analytics.track('Todo status changed', {
+            analytics.track('Todo_Status_Changed', {
               done: status
             })
           },
