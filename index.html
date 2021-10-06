@@ -81,8 +81,11 @@
 
       try {
         todoList = JSON.parse(window.localStorage.getItem('todoList'))
+        if (!todoList) {
+          todoList = [{ text: 'This is my first todo task', done: false }]
+        }
       } catch (error) {
-        console.error(error)
+        todoList = [{ text: 'This is my first todo task', done: false }]
       }
 
       const store = {
