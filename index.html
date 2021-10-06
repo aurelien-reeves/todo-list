@@ -122,6 +122,7 @@
             analytics.track('Todo_Status_Changed', {
               done: status
             })
+            this.saveTodoList()
           },
 
           toggleDoneFeature(value) {
@@ -129,7 +130,8 @@
           },
 
           saveTodoList() {
-            window.localStorage.setItem('todoList', JSON.stringify(this.state.todoList))
+            const todoList = JSON.stringify(Vue.toRaw(this.state.todoList))
+            window.localStorage.setItem('todoList', todoList)
           },
         }
       }
@@ -142,7 +144,7 @@
         template: `
           <li class="collection-item" v-if="doneEnabled">
             <label>
-              <input type="checkbox" class="filled-in" v-model="todo.isDone" @click="$emit('doneChanged', $event.target.checked)" />
+              <input type="checkbox" class="filled-in" v-model="todo.isDone" @change="$emit('doneChanged', $event.target.checked)" />
               <span :class="{ done: todo.isDone, 'blue-text': !todo.isDone, 'text-darken-2': true }">{{ todo.text }}</span>
             </label>
           </li>
