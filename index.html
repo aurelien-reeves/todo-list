@@ -76,9 +76,17 @@
     </div>
 
     <script>
+      let todoList = [{ text: 'This is my first todo task', done: false }]
+
+      try {
+        todoList = JSON.parse(window.localStorage.getItem('todoList'))
+      } catch (error) {
+        console.error(error)
+      }
+
       const store = {
         state: Vue.reactive({
-          todoList: [{ text: 'This is my first todo task', done: false }],
+          todoList: todoList,
           doneEnabled: false
         })
       }
@@ -98,6 +106,8 @@
             this.newItem = ''
             document.querySelector('#new-item').value = this.newItem
 
+            this.saveTodoList()
+
             analytics.track('Todo_Added', {
               totalInCurrentList: this.state.todoList.length
             })
@@ -109,7 +119,6 @@
           },
 
           changeDoneState(status) {
-            console.log(status)
             analytics.track('Todo_Status_Changed', {
               done: status
             })
@@ -117,7 +126,11 @@
 
           toggleDoneFeature(value) {
             this.state.doneEnabled = value
-          }
+          },
+
+          saveTodoList() {
+            window.localStorage.setItem('todoList', JSON.stringify(this.state.todoList))
+          },
         }
       }
 
