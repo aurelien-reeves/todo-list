@@ -57,6 +57,7 @@
             v-for="item in state.todoList"
             v-bind:todo="item"
             v-bind:done-enabled="state.doneEnabled"
+            v-bind:delete-enabled="state.deleteEnabled"
             v-on:done-changed="changeDoneState"
           ></todo-item>
         </ul>
@@ -87,7 +88,8 @@
       const store = {
         state: Vue.reactive({
           todoList: todoList,
-          doneEnabled: false
+          doneEnabled: false,
+          deleteEnabled: false
         })
       }
 
@@ -129,6 +131,11 @@
             this.state.doneEnabled = value
           },
 
+          deleteTodo(todo) {
+            this.state.todoList = this.state.todoList.filter((td) => td != todo)
+            this.saveTodoList()
+          },
+
           saveTodoList() {
             const todoList = JSON.stringify(Vue.toRaw(this.state.todoList))
             window.localStorage.setItem('todoList', todoList)
@@ -139,7 +146,7 @@
       const app = Vue.createApp(TodoList)
 
       app.component('todo-item', {
-        props: ['todo', 'doneEnabled'],
+        props: ['todo', 'doneEnabled', 'deleteEnabled'],
         emits: ['doneChanged'],
         template: `
           <li class="collection-item" v-if="doneEnabled">
@@ -147,10 +154,24 @@
               <input type="checkbox" class="filled-in" v-model="todo.isDone" @change="$emit('doneChanged', $event.target.checked)" />
               <span :class="{ done: todo.isDone, 'blue-text': !todo.isDone, 'text-darken-2': true }">{{ todo.text }}</span>
             </label>
+            <todo-delete v-bind:delete-enabled="deleteEnabled" v-bind:todo="todo" />
           </li>
           <li class="collection-item" v-if="!doneEnabled">
             {{ todo.text }}
+            <todo-delete v-bind:delete-enabled="deleteEnabled" v-bind:todo="todo" />
           </li>
+        `
+      })
+
+      app.component('todo-delete', {
+        props: ['deleteEnabled', 'todo'],
+        methods: {
+          test() {
+            vm.deleteTodo(this.todo)
+          },
+        },
+        template: `
+          <a v-if="deleteEnabled" href="#!" class="secondary-content" @click="test"><i class="material-icons red-text text-darken-4">delete_forever</i></a>
         `
       })
 
@@ -176,15 +197,22 @@
       }
 
       client.on(client.Event.SDK_READY, function() {
-        var treatment = client.getTreatment('SPL-TODO_Done');
-        if (treatment === 'on') {
-            console.log('on')
+        const doneTreatment = client.getTreatment('SPL-TODO_Done');
+        if (doneTreatment === 'on') {
             vm.toggleDoneFeature(true)
-        } else if (treatment === 'off') {
-            console.log('off')
+        } else if (doneTreatment === 'off') {
             vm.toggleDoneFeature(false)
         } else {
-            console.log(treatment)
+            console.log(doneTreatment)
+        }
+
+        const deleteTreatment = client.getTreatment('SPL-TODO_Delete');
+        if (deleteTreatment === 'on') {
+            vm.toggleDoneFeature(true)
+        } else if (deleteTreatment === 'off') {
+            vm.toggleDoneFeature(false)
+        } else {
+            console.log(deleteTreatment)
         }
       })
     </script>
