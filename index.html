@@ -134,6 +134,10 @@
             this.state.doneEnabled = value
           },
 
+          toggleDeleteFeature(value) {
+            this.state.deleteEnabled = value
+          },
+
           deleteTodo(todo) {
             this.state.todoList = this.state.todoList.filter((td) => td != todo)
             this.saveTodoList()
@@ -211,9 +215,9 @@
 
         const deleteTreatment = client.getTreatment('SPL-TODO_Delete');
         if (deleteTreatment === 'on') {
-            vm.toggleDoneFeature(true)
+            vm.toggleDeleteFeature(true)
         } else if (deleteTreatment === 'off') {
-            vm.toggleDoneFeature(false)
+            vm.toggleDeleteFeature(false)
         } else {
             console.log(deleteTreatment)
         }
