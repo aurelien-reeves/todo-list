@@ -12,29 +12,73 @@
       .done {
         text-decoration: line-through;
       }
+
+      /* label focus color */
+      .input-field input[type=text]:focus + label {
+        color: #1976D2 !important;
+      }
+      /* label underline focus color */
+      .input-field input[type=text]:focus {
+        border-bottom: 1px solid #1976D2 !important;
+        box-shadow: 0 1px 0 0 #1976D2 !important;
+      }
+
+      /* icon prefix focus color */
+      .input-field .prefix.active {
+        color: #1976D2 !important;
+      }
+
+      [type="checkbox"].filled-in:checked + span:not(.lever)::after {
+        border-color: #1976D2 !important;
+        background-color: #1976D2 !important;
+      }
+
     </style>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <title>Sample Todo List</title>
   </head>
   <body>
-    <div id="todo-app">
-      <ul>
-        <todo-item
-          v-for="item in state.todoList"
-          v-bind:todo="item"
-          v-bind:done-enabled="state.doneEnabled"
-          v-on:done-changed="changeDoneState"
-        ></todo-item>
-      </ul>
-      <form @submit="addTodo">
-        <input type="text" placeholder="Add todo" v-model="newItem" />
-        <input type="submit" name="Add" value="Add" />
-      </form>
+    <div class="container" id="todo-app">
+      <nav><div class="nav-wrapper blue darken-2">
+        <a href="#" class="brand-logo">My Sample Todo-List App</a>
+      </div></nav>
+
+      <div class="section">
+        <ul class="collection z-depth-2">
+          <todo-item
+            v-for="item in state.todoList"
+            v-bind:todo="item"
+            v-bind:done-enabled="state.doneEnabled"
+            v-on:done-changed="changeDoneState"
+          ></todo-item>
+        </ul>
+        <div class="section">
+        <form @submit="addTodo" class="row">
+          <div class="input-field col s12">
+            <i class="material-icons prefix">mode_edit</i>
+            <input id="new-item" type="text" class="input-field" v-model="newItem" />
+            <label for="new-item">New task</label>
+          </div>
+          <button class="btn waves-effect waves-light col s2 offset-s10  blue darken-2" type="submit">
+            Add task
+            <i class="material-icons right">send</i>
+          </button>
+        </form>
+      </div>
     </div>
 
     <script>
       const store = {
         state: Vue.reactive({
-          todoList: [{ text: 'First task', done: false }],
+          todoList: [{ text: 'This is my first todo task', done: false }],
           doneEnabled: false
         })
       }
@@ -45,12 +89,20 @@
         },
         methods: {
           addTodo(event) {
+            if (!this.newItem) {
+              event.preventDefault()
+              return false
+            }
+
             this.state.todoList.push({ text: this.newItem, isDone: false })
             this.newItem = ''
+            document.querySelector('#new-item').value = this.newItem
 
             analytics.track('Todo added', {
               totalInCurrentList: this.state.todoList.length
             })
+
+            M.updateTextFields()
 
             event.preventDefault()
             return false
@@ -75,11 +127,13 @@
         props: ['todo', 'doneEnabled'],
         emits: ['doneChanged'],
         template: `
-          <li v-if="doneEnabled">
-            <input type="checkbox" v-model="todo.isDone" @click="$emit('doneChanged', $event.target.checked)" />
-            <label :class="{ done: todo.isDone}">{{ todo.text }}</label>
+          <li class="collection-item" v-if="doneEnabled">
+            <label>
+              <input type="checkbox" class="filled-in" v-model="todo.isDone" @click="$emit('doneChanged', $event.target.checked)" />
+              <span :class="{ done: todo.isDone, 'blue-text': !todo.isDone, 'text-darken-2': true }">{{ todo.text }}</span>
+            </label>
           </li>
-          <li v-if="!doneEnabled">
+          <li class="collection-item" v-if="!doneEnabled">
             {{ todo.text }}
           </li>
         `
