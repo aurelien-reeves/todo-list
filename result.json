@@ -102,6 +102,61 @@
           }
         ],
         "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "todo-list;a-task-can-be-deleted",
+        "keyword": "Scenario",
+        "line": 15,
+        "name": "a task can be deleted",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 16,
+            "name": "some tasks",
+            "match": {
+              "location": "features/step-definitions.js:3"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 17,
+            "name": "I delete a task",
+            "match": {
+              "location": "features/step-definitions.js:23"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 18,
+            "name": "it disappear from the todo list",
+            "match": {
+              "location": "features/step-definitions.js:27"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 0
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@SPLIT-SPL-TODO_Delete",
+            "line": 14
+          }
+        ],
+        "type": "scenario"
       }
     ],
     "id": "todo-list",

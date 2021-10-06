@@ -10,3 +10,9 @@ Feature: Todo-list
     Given some tasks
     When I check a task
     Then it is marked as done
+
+  @SPLIT-SPL-TODO_Delete
+  Scenario: a task can be deleted
+    Given some tasks
+    When I delete a task
+    Then it disappear from the todo list
