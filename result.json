@@ -1,0 +1,114 @@
+[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "todo-list;a-task-can-be-added",
+        "keyword": "Scenario",
+        "line": 4,
+        "name": "a task can be added",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 5,
+            "name": "I add a task",
+            "match": {
+              "location": "features/step-definitions.js:15"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 6,
+            "name": "it is added to the list",
+            "match": {
+              "location": "features/step-definitions.js:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 0
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@SEGMENT-Todo_Added",
+            "line": 3
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "todo-list;a-task-can-be-done",
+        "keyword": "Scenario",
+        "line": 9,
+        "name": "a task can be done",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 10,
+            "name": "some tasks",
+            "match": {
+              "location": "features/step-definitions.js:3"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 11,
+            "name": "I check a task",
+            "match": {
+              "location": "features/step-definitions.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "it is marked as done",
+            "match": {
+              "location": "features/step-definitions.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 0
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@SPLIT-SPL-TODO_Done",
+            "line": 8
+          },
+          {
+            "name": "@SEGMENT-Todo_Status_Changed",
+            "line": 8
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "todo-list",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Todo-list",
+    "tags": [],
+    "uri": "features/todo-list.feature"
+  }
+]
