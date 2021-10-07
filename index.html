@@ -204,6 +204,14 @@
       }
 
       client.on(client.Event.SDK_READY, function() {
+        updateSplitTreatment()
+      })
+
+      client.on(client.Event.SDK_UPDATE, function () {
+        updateSplitTreatment()
+      });
+
+      function updateSplitTreatment() {
         const doneTreatment = client.getTreatment('SPL-TODO_Done');
         if (doneTreatment === 'on') {
             vm.toggleDoneFeature(true)
@@ -221,7 +229,7 @@
         } else {
             console.log(deleteTreatment)
         }
-      })
+      }
     </script>
   </body>
 </html>
